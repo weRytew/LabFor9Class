@@ -59,13 +59,15 @@ def Main():
     print("введите время с 00:00 до 23:59 в формате часы пробелы минуты(часы и минуты должны быть целыми числами/цифрами)")
     userInput = input().split()
     lenUserInput = True
+    hour = 0
+    hourChek = False
+    minut = 0
+    minutChek = False
     if len(userInput) != 2:
     	lenUserInput = False
-    	
-    hour = userInput[0]
-    hourChek = False
-    minut = userInput[1]
-    minutChek = False
+    else:
+        hour = userInput[0]
+        minut = userInput[1]
     for i in range(0, 24):
     	if hour == str(i) or hour == "0"+str(i):
     		hourChek = True
