@@ -63,14 +63,15 @@ def Main():
     minut = userInput[1]
     minutChek = False
     for i in range(0, 24):
-    	if hour == str(i):
+    	if hour == str(i) or hour == "0"+str(i):
     		hourChek = True
-    for i in range(0, 59):
-    	if minut == str(i):
+    for i in range(0, 60):
+    	if minut == str(i) or minut == "0"+str(i):
     		minutChek = True
 
     if hourChek and minutChek:
-        userInput2 = [int(hour), int(minut)]
+        userInput2 = list(map(int, userInput))
+        #userInput2 = [int(hour), int(minut)]
         processingTime(userInput2)
     if not hourChek:
         print("Введены недопустимые данные: часы должны быть от 0 до 23")
