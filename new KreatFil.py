@@ -43,7 +43,7 @@ def TimesofDay(userInputHour, userInputMinut, timesofDay):
 def processingTime(userInput):
     hourArray = [" часов", " час", " часа"]
     minutArray = [" минута", " минуты", " минут"]
-    timesofDay = ["ночи", "утора", "дня", "вечера", "полночь", "полдень"]
+    timesofDay = ["ночи", "утра", "дня", "вечера", "полночь", "полдень"]
 
     hour = Hour(hourArray, userInput[0])
     minut = Minut(minutArray, userInput[1])
@@ -58,6 +58,10 @@ def processingTime(userInput):
 def Main():
     print("введите время с 00:00 до 23:59 в формате часы пробелы минуты(часы и минуты должны быть целыми числами/цифрами)")
     userInput = input().split()
+    lenUserInput = True
+    if len(userInput) != 2:
+    	lenUserInput = False
+    	
     hour = userInput[0]
     hourChek = False
     minut = userInput[1]
@@ -68,8 +72,9 @@ def Main():
     for i in range(0, 60):
     	if minut == str(i) or minut == "0"+str(i):
     		minutChek = True
-
-    if hourChek and minutChek:
+    if not lenUserInput:
+    	print("тутуту...")
+    if hourChek and minutChek and lenUserInput:
         userInput2 = list(map(int, userInput))
         #userInput2 = [int(hour), int(minut)]
         processingTime(userInput2)
