@@ -75,12 +75,8 @@ def sortSliyaniem(array):
     colsravn = 0
     array1 = array[:len(array) // 2]
     array2 = array[len(array) // 2:]
-    print(array1)
-    print(array2)
     rezForArray1 = sortPuzir(array1)
     rezForArray2 = sortPuzir(array2)
-    print(rezForArray1)
-    print(rezForArray2)
     sortedArray1 = rezForArray1[0]
     sortedArray2 = rezForArray2[0]
     colPerestan += rezForArray1[1] + rezForArray2[1]
@@ -196,9 +192,6 @@ def workWithUserArray(array, LenArray, arrayForWork):
         LenArray = len(array)
     print("введите A для вывода массива, B для сортировки и любой другой символ для перехода в главное меню")
     userAction = input()
-    print(array)
-    print(LenArray)
-    print(arrayForWork)
     if userAction == "A":
         vivod(None, arrayForWork[0], arrayForWork[1], arrayForWork[2])
     elif userAction == "B":
