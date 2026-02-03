@@ -39,6 +39,47 @@
     повторяем это пока список небудет отсортерован
 """
 
+"""
+просим пользователя выбрать демонстрационный вариант или изменяемый
+если демонстрационный то
+    создаем сисок заполненый случайными элементами
+    сортируем его пузытьком, выбором и слиянием
+    выводим все три отсортированный списка пользователю
+    с количеством перестановок и сравнений для каждого
+если изменяемый то
+    если пользователь хочеть изменить список то
+        просим ввсети длену измененного списка или сам изменный список
+        если изменяеться длина то
+            создаем список из случайных элементов введенной дляины
+        если список то
+            получаем список от пользователя
+        *1 пердлогаем пользователю вывести или отсортировать список
+        если пользователь выбирает вывод то
+            выводим
+        если же сортировку то
+            просем его выбрать одну из 3(пузырьком, выбором, слиянием)
+            сортируем и мереходим к *1
+
+сортировка пузырьком
+    проходим по списку
+        если большой элемент сотоит перед маленьким то они меняються местами
+    повторяем это пока список небудет отсортерован
+
+сортировка выбором
+    проходжим по списку и ищем самый маленький элемент меняем его с первым
+    делаем еще раз на 2 по велечене меняем местами со 2 элементом итд
+    повторяем это пока список небудет отсортерован
+
+сщртировка слиянием
+    делим изначальный список на 2 одинаковых +- по размену
+    сортируем каждый
+    составляем из отсортировоных списков 1 конечный
+    если нынешний элемент 1 массива меньше  нынешнего элемента 2 массива то
+        в конечный массив добавляем элемент из первого и идем на следующий элемент 1 массива
+    тоже самое и для 2
+    повторяем это пока список небудет отсортерован
+"""
+
 import random
 
 
@@ -69,39 +110,81 @@ def sortPuzir(array):
                 array[j - 1], array[j] = array[j], array[j - 1]
     return array, colPerestan, colsravn
 
-def sortSliyaniem(array):
-    print("fff")
+def sortSliyaniem(array, colPerestan, colsravn):
+    if len(array) <= 1:
+        return array, colPerestan, colsravn
+    LenAreay = len(array) // 2
+    firstArray = sortSliyaniem(array[:LenAreay], colPerestan, colsravn)
+    secondArray = sortSliyaniem(array[LenAreay:], colPerestan, colsravn)
+    vv = sortarray(firstArray[0], secondArray[0])
+    colPerestan += firstArray[1]
+    colsravn += firstArray[2]
+    colPerestan += secondArray[1]
+    colsravn += secondArray[2]
+    colPerestan += vv[1]
+    colsravn += vv[2]
+    return vv[0],  colPerestan, colsravn
+
+def sortarray(firstArray, secondArray):
     colPerestan = 0
     colsravn = 0
-    array1 = array[:len(array) // 2]
-    array2 = array[len(array) // 2:]
-    rezForArray1 = sortPuzir(array1)
-    rezForArray2 = sortPuzir(array2)
-    sortedArray1 = rezForArray1[0]
-    sortedArray2 = rezForArray2[0]
-    colPerestan += rezForArray1[1] + rezForArray2[1]
-    colsravn += rezForArray1[2] + rezForArray2[2]
-
-    rezArray = ["*"] * len(array)
     i = 0
     j = 0
-    while i < len(sortedArray1) and j < len(sortedArray2):
+    k = [0]*(len(secondArray) + len(firstArray))
+    while i < len(firstArray) and j < len(secondArray):
+        colPerestan += 1
         colsravn += 1
-        if sortedArray1[i] <= sortedArray2[j]:
-            rezArray[i + j] = sortedArray1[i]
+        if firstArray[i] <= secondArray[j]:
+            k[i + j] = firstArray[i]
             i += 1
         else:
-            rezArray[i + j] = sortedArray2[j]
+            k[i + j] = secondArray[j]
             j += 1
-    while i < len(sortedArray1):
-        rezArray[i + j] = sortedArray1[i]
+    while i < len(firstArray):
+        colPerestan += 1
+        k[i + j] = firstArray[i]
         i += 1
-    while j < len(sortedArray2):
-        rezArray[i + j] = sortedArray2[j]
+    while j < len(secondArray):
+        colPerestan += 1
+        k[i + j] = secondArray[j]
         j += 1
-    return rezArray, colPerestan, colsravn
+    return k ,  colPerestan, colsravn
 
-"""3 5 2 7 1 67 23 45 3 """
+# def sortSliyaniem(array):
+#     print("fff")
+#     colPerestan = 0
+#     colsravn = 0
+#     array1 = array[:len(array) // 2]
+#     array2 = array[len(array) // 2:]
+#     print(array1)
+#     print(array2)
+#     rezForArray1 = sortPuzir(array1)
+#     rezForArray2 = sortPuzir(array2)
+#     print(rezForArray1)
+#     print(rezForArray2)
+#     sortedArray1 = rezForArray1[0]
+#     sortedArray2 = rezForArray2[0]
+#     colPerestan += rezForArray1[1] + rezForArray2[1]
+#     colsravn += rezForArray1[2] + rezForArray2[2]
+#
+#     rezArray = ["*"] * len(array)
+#     i = 0
+#     j = 0
+#     while i < len(sortedArray1) and j < len(sortedArray2):
+#         colsravn += 1
+#         if sortedArray1[i] <= sortedArray2[j]:
+#             rezArray[i + j] = sortedArray1[i]
+#             i += 1
+#         else:
+#             rezArray[i + j] = sortedArray2[j]
+#             j += 1
+#     while i < len(sortedArray1):
+#         rezArray[i + j] = sortedArray1[i]
+#         i += 1
+#     while j < len(sortedArray2):
+#         rezArray[i + j] = sortedArray2[j]
+#         j += 1
+#     return rezArray, colPerestan, colsravn
 
 def vivod(maxColElementRow, array, colPerestan, colsravn):
     lenMinElement = len(str(min(array)))
@@ -138,7 +221,7 @@ def demonstration(cloNumberInDemonstration):
     rezSortVibor = sortVyborom(demoArray)
     print("вот массив  отсортированный выбором")
     vivod(6, rezSortVibor[0], rezSortVibor[1], rezSortVibor[2])
-    rezSortSliyaniem = sortSliyaniem(demoArray)
+    rezSortSliyaniem = sortSliyaniem(demoArray, 0, 0)
     print("вот массив отсортированный 'Сортировка слиянием'")
     vivod(6, rezSortSliyaniem[0], rezSortSliyaniem[1], rezSortSliyaniem[2])
     main()
@@ -161,7 +244,7 @@ def MbChengArray():
         except:
             return None, False
     elif userInput == "P":
-            return None, True
+            return None, True, 0
     else:
         return None, False
 
@@ -173,7 +256,7 @@ def otherSort(array, LenArray):
     elif userInputSort == "B":
         return sortVyborom(array)
     elif userInputSort == "C":
-        return sortSliyaniem(array)
+        return sortSliyaniem(array, 0, 0)
     else:
         print("некорректный ввод")
         workWithUserArray(array, LenArray)
@@ -213,6 +296,8 @@ def wokWithUserInput():
                 workWithUserArray(None, rez[0], None)
             elif rez[2] == 2:
                 workWithUserArray(rez[0], len(rez[0]), None)
+            elif rez[2] == 0:
+                workWithUserArray(None, None, None)
         else:
             print("что-то пошло не так")
             main()
