@@ -78,30 +78,20 @@ def A():
 
 
 def read():
-    # try:
     with open("db.json", "r", encoding="utf-8") as file:
         return json.load(file)
-    # except:
-    #     return None
 
 def addElenment(newData: planet):
-    # try:
     lastData = read()
     print(len(lastData))
     updatingData = lastData
     updatingData[len(lastData)] = newData.getDataList()
     write(updatingData)
-    # except :
-    #     print("ошибка запеси")
-    #     return None
 
 def write(data):
     # try:
     with open("db.json", "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
-    # except :
-    #     print("ошибка запеси")
-    #     return None
 
 
 def dictToList(dict):
@@ -175,6 +165,7 @@ def maxLen(dict):
     mxWeight = 1
     mxDistanceFromTheSun = 1
     mxType = 1
+    mxID = 1
     for i in dict:
         mxId = max(len(i), mxId)
         mxName = max(len(str(dict[i][0])), mxName)
@@ -182,12 +173,13 @@ def maxLen(dict):
         mxWeight = max(len(str(dict[i][2])), mxWeight)
         mxDistanceFromTheSun = max(len(str(dict[i][3])), mxDistanceFromTheSun)
         mxType = max(len(str(dict[i][4])), mxType)
-    return mxId, mxName, mxRadius, mxWeight, mxDistanceFromTheSun, mxType
+        mxID = max(len(str(dict[i][5])), mxID)
+    return mxId, mxName, mxRadius, mxWeight, mxDistanceFromTheSun, mxType, mxID
  
 def printerDB():
     db = read()
-    mxId, mxName, mxRadius, mxWeight, mxDistanceFromTheSun, mxType = maxLen(db)
-    s0Id = "id" + " " * (mxId - len("id")) + " |"
+    mxId, mxName, mxRadius, mxWeight, mxDistanceFromTheSun, mxType, mxID = maxLen(db)
+    s0Id = "N" + " " * (mxId - len("id")) + " |"
     mxId = len(s0Id)-2
     s0Name = "Название" + " " * (mxName - len("Название")) + " |"
     mxName = len(s0Name)-2
@@ -199,7 +191,9 @@ def printerDB():
     mxDistanceFromTheSun = len(s0DistanceFromTheSun)-2
     s0Type = "Тип" + " " * (mxType - len("Тип")) + " |"
     mxType = len(s0Type)-2
-    print(s0Id, s0Name, s0Radius, s0Weight, s0DistanceFromTheSun, s0Type)
+    s0mxID = "ID" + " " * (mxID - len("ID")) + " |"
+    mxID = len(s0mxID)-2
+    print(s0Id, s0Name, s0Radius, s0Weight, s0DistanceFromTheSun, s0Type, s0mxID)
     for i in db:
         siId = str(i) + " " * (mxId - len(str(i))) + " |"
         siName = str(db[i][0]) + " " * (mxName - len(str(db[i][0]))) + " |"
@@ -207,9 +201,20 @@ def printerDB():
         siWeight = str(db[i][2]) + " " * (mxWeight - len(str(db[i][2]))) + " |"
         siDistanceFromTheSun = str(db[i][3]) + " " * (mxDistanceFromTheSun - len(str(db[i][3]))) + " |"
         siType = str(db[i][4]) + " " * (mxType - len(str(db[i][4]))) + " |"
-        print(siId, siName, siRadius, siWeight, siDistanceFromTheSun, siType)
+        siID = str(db[i][5]) + " " * (mxID - len(str(db[i][5]))) + " |"
+        print(siId, siName, siRadius, siWeight, siDistanceFromTheSun, siType, siID)
     
-
+def sortListPlanet(list, pole):
+    planet.whatsr = pole
+    list = list 
+    for i in range(0, len(list)):
+        ind = i
+        for j in range(i+1, len(list)):
+            if list[j] <= list[ind]:
+                ind = j
+        print(i, list[ind], ind, list[i])
+        list[i], list[ind] = list[ind], list[i]
+    return list
 
 
 
@@ -217,23 +222,25 @@ def printerDB():
 mars = planet("марс", 1000, 2000000, 40000000, "roc")
 upitr = planet("юпитер", 1, 1, 300, "gas")
 vinera = planet("винера", 200, 30, 45, "roc")
-mars2 = planet("марс", 1000, 2000000, 400000000000000000000000000000000000000000000000, "roc")
+mars2 = planet("марс2", 1000, 2000000, 400000000000000000000000000000000000000000000000, "roc")
 
-write({})
+# write({})
+# print(mars)
 
-print(read())
-addElenment(vinera)
-addElenment(mars)
-addElenment(vinera)
-addElenment(mars2)
-addElenment(vinera)
-addElenment(mars2)
-addElenment(vinera)
-addElenment(mars)
-addElenment(vinera)
-addElenment(mars)
-print(read())
-sortDB("radius")
-chengeElement(0, ['винера', 200, 30, 45, 'roc'])
-print(read())
-printerDB()
+# print(read())
+# addElenment(vinera)
+# addElenment(mars)
+# addElenment(vinera)
+# addElenment(mars2)
+# addElenment(vinera)
+# addElenment(mars2)
+# addElenment(vinera)
+# addElenment(mars)
+# addElenment(vinera)
+# addElenment(mars)
+# print(read())
+# sortDB("radius")
+# # chengeElement(0, ['винера', 200, 30, 45, 'roc'])
+# print(read())
+# printerDB()
+
