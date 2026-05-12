@@ -12,10 +12,25 @@ def read():
     with open("db.json", "r", encoding="utf-8") as file:
         return json.load(file)
 
+def jsonToList(js: dict):
+    ls = [0]*len(js)
+    counter = 0
+    for i in js:
+        ls[counter] = resept.create(js[i][:-1])[0]
+        counter += 1
+    return ls
 # 2
 def write(data):
+    if type(data) == list:
+        data = listToJs(data)
     with open("db.json", "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
+
+def listToJs(ls: list[resept]):
+    js = {}
+    for i in range(len(ls)):
+        js[i] = ls[i].getDataList()
+    return js
 
 # 3
 def maxLen(dict):
@@ -43,13 +58,13 @@ def printerDB():
     mxId = len(s0Id)-2
     s0Name = "Название" + " " * (mxName - len("Название")) + " |"
     mxName = len(s0Name)-2
-    s0Radius = "Радиус" + " " * (mxRadius - len("Радиус")) + " |"
+    s0Radius = "Категория" + " " * (mxRadius - len("Категория")) + " |"
     mxRadius = len(s0Radius)-2
-    s0Weight = "Весс" + " " * (mxWeight - len("Весс")) + " |"
+    s0Weight = "время готовки" + " " * (mxWeight - len("время готовки")) + " |"
     mxWeight = len(s0Weight)-2
-    s0DistanceFromTheSun = "Растояние до солнца" + " " * (mxDistanceFromTheSun - len("Растояние до солнца")) + " |"
+    s0DistanceFromTheSun = "ингридиенты" + " " * (mxDistanceFromTheSun - len("ингридиенты")) + " |"
     mxDistanceFromTheSun = len(s0DistanceFromTheSun)-2
-    s0Type = "Тип" + " " * (mxType - len("Тип")) + " |"
+    s0Type = "сложность" + " " * (mxType - len("сложность")) + " |"
     mxType = len(s0Type)-2
     s0mxID = "ID" + " " * (mxID - len("ID")) + " |"
     mxID = len(s0mxID)-2
@@ -78,14 +93,28 @@ def addElenment(newData: resept):
     write(updatingData)
 
 # 5 - finder
+def fnd(name, wher, ls: list[resept]):
+    if wher == "db":
+        d = read()
+        for i in d:
+            if d[i][0] == name: return resept.create(d[i][:-1])[0]
+    elif wher == "ls":
+        for i in ls:
+            if i.name == name:
+                return i
+    return "not faund"
 
 # 6
 def chengeElement(index, newElement):
     try:
-        if len(newElement) == 5 and type(newElement) == list:
+        print("ggggggggggggggggggggggggggggggggggggggggggggggg")
+        newElement = newElement[0]
+        if type(newElement) == resept:
             dict = read()
-            dict[index] = resept.getDataList(newElement)
+            print(dict)
+            dict[index] = newElement.getDataList()
             write(dict)
+            return True
         else:
             return None
     except:
@@ -154,70 +183,114 @@ def sortListPlanet(list, pole):
         list[i], list[ind] = list[ind], list[i]
     return list
 
+def printAllcomands():
+    print("доступные команды:")
+    print(" load db")
+    print(" save db")
+    print(" print")
+    print(" append in")
+    print(" find")
+    print(" chenge")
+    print(" del")
+    print(" sort")
+    print(" exit")
 # 9 CSV
 
 def main():
-    db = []
+    db: list[resept] = []
     work = True
+    print("m для доступных команд")
     while work:
-        userInput = input()
-        if userInput == "load db":
-            db = read()
-        elif userInput == "save":
-            write(db)
-        elif userInput == "print db":
-            usInp = input()
-            if usInp == "db":
-                printerDB()
-            elif usInp == "list":
-                p(db)
-        elif userInput == "append":
-            usInp = input()
-            if usInp == "db":
+        er = False
+        userInput = input().strip()
+        try:
+            if userInput == "m":
+                printAllcomands()
+            elif userInput == "load db":
+                dbjs = read()
+                db = jsonToList(dbjs)
+            elif userInput == "save db":
+                write(db)
+            elif userInput == "print":
+                print("db or list?")
+                usInp = input()
+                if usInp == "db":
+                    printerDB()
+                elif usInp == "list":
+                    p(db)
+            elif userInput == "append in":
+                print("db or list?")
+                usInp = input().strip()
+                print("имя;категория;время приготовления;ингридиенты(a b c итд);сложность")
                 newEl =  resept.create(input().split(";"))
-                if newEl[1] != False:
-                    addElenment(newEl[0])
-                    print("good")
-                else:
-                    print("bed")
-            elif usInp == "list":
-                newEl =  resept.create(input().split(";"))
-                if newEl[1] != False:
-                    db.append(newEl[0])
-                    print("good")
-                else:
-                    print("bed")
-        elif userInput == "find": # дописать
-            print()
-        elif userInput == "chenge":
-            usInp = input()
-            if usInp == "db":
-                usInp2 = input().split(";")
-                chengeElement(int(usInp2[0]), resept.create(usInp2))
-            elif usInp == "list":
-                usInp2 = input().split(";")
-                db[int(usInp2[0])] = resept.create(usInp2)
-        elif userInput == "del":
-            usInp = input()
-            if usInp == "db":
-                usInp2 = int(input())
-                delElement(usInp2)
-            elif usInp == "list":
-                usInp2 = int(input())
-                db.pop(usInp2)
-        elif userInput == "sort":
-            usInp = input()
-            if usInp == "db":
-                usInp2 = input()
-                sortDB(usInp2)
-            elif usInp == "list":
-                usInp2 = int(input())
-                sortListPlanet(db, usInp2)
-        elif userInput == "CSV": # дописать
-            print()
-        elif userInput == "exit":
-            work = False
-        print("next")
+                if usInp == "db":
+                    if newEl[1] != False:
+                        addElenment(newEl[0])
+                    else:
+                        er = True
+                elif usInp == "list":
+                    if newEl[1] != False:
+                        db.append(newEl[0])
+                    else:
+                        er = True
+            elif userInput == "find": # дописать
+                print("db or list?")
+                usInp = input().strip()
+                if usInp == "db":
+                    print("название")
+                    usInp2 = input().strip()
+                    print(fnd(usInp2, "db", []))
+                elif usInp == "list":
+                    print("название")
+                    usInp2 = input().strip()
+                    print(fnd(usInp2, "ls", db))
+            elif userInput == "chenge":
+                print("db or list?")
+                usInp = input().strip()
+                if usInp == "db":
+                    print("номер в бд;(далие измененный обьект)имя;категория;время приготовления;ингридиенты(a b c итд);сложность")
+                    usInp2 = input().split(";")
+                    lk = chengeElement(usInp2[0], resept.create(usInp2[1:]))
+                    if lk == None:
+                        er = True
+                elif usInp == "list":
+                    print("номер в списке;(далие измененный обьект)имя;категория;время приготовления;ингридиенты(a b c итд);сложность")
+                    usInp2 = input().split(";")
+                    db[int(usInp2[0])] = resept.create(usInp2[1:])
+            elif userInput == "del":
+                print("db or list?")
+                usInp = input().strip()
+                if usInp == "db":
+                    print("номер в бд")
+                    usInp2 = int(input())
+                    delElement(usInp2)
+                elif usInp == "list":
+                    print("номер в списке")
+                    usInp2 = int(input())
+                    db.pop(usInp2)
+            elif userInput == "sort":
+                print("db or list?")
+                usInp = input().strip()
+                if usInp == "db":
+                    print("по чему: name\n categoray\n timeForCook\n ingredients\n level")
+                    usInp2 = input().strip()
+                    sortDB(usInp2)
+                elif usInp == "list":
+                    usInp2 = input().strip()
+                    print("по чему: name\n categoray\n timeForCook\n ingredients\n level")
+                    sortListPlanet(db, usInp2)
+            elif userInput == "CSV": # дописать
+                print()
+            elif userInput == "exit":
+                work = False
+            else:
+                er = True
+            if not er:
+                print("successfully")
+            else:
+                print("error")
+        except:
+            print("error")
 
 if __name__ == "__main__":
     main()
