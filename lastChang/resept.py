@@ -53,8 +53,8 @@ class resept:
     
     @classmethod
     def create(cls, data):
-        # print(data)
-        # print(len(data))
+        print(data)
+        print(len(data))
         if len(data) == 5:
             return cls(data[0], data[1], data[2], data[3], data[4]), True
         return False, False
