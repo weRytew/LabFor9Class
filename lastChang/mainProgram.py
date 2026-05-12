@@ -5,6 +5,77 @@ from planet import planet
 
 howSort = None
 
+def A():
+    print()
+    # def getAllPlanetsList():
+    #     with open("jsonPlanets.json", "r") as jsonWithPlanets:
+    #         listPlanetsJson = json.load(jsonWithPlanets)
+    #     listPlanets= []
+    #     for i in listPlanetsJson:
+    #         name = i
+    #         radius = listPlanetsJson[i]["radius"]
+    #         weight = listPlanetsJson[i]["weight"]
+    #         distanceFromTheSun = listPlanetsJson[i]["distanceFromTheSun"]
+    #         type = listPlanetsJson[i]["type"]
+    #         planet = planets.planet(name, radius, weight,distanceFromTheSun, type)
+    #         listPlanets.append(planet)
+    #     return listPlanets
+
+    # def getAllPlanetsDict():
+    #     with open("jsonPlanets.json", "r") as jsonWithPlanets:
+    #         return json.load(jsonWithPlanets)
+
+    # def updateJsonWithPlanets(updateList):
+    #     with open("jsonPlanets.json", "w") as jsonWithPlanets:
+    #         json.dump(updateList, jsonWithPlanets)
+
+    # # def update(newList):
+    # #
+    # #     for i in newList
+
+    # def updatePlanet(namePlanet, whatUpdate, value):
+    #     planetsDict = getAllPlanetsDict()
+    #     try:
+    #         if whatUpdate != "name":
+    #             planetsDict[namePlanet][whatUpdate] = value
+    #         else:
+    #             data = planetsDict[namePlanet]
+    #             delPlanet(namePlanet)
+    #             name = value
+    #             radius = data["radius"]
+    #             weight = data["weight"]
+    #             distanceFromTheSun = data["distanceFromTheSun"]
+    #             type = data["type"]
+    #             planet = planets.planet(name, radius, weight, distanceFromTheSun, type)
+    #             addPlanetInJson(planet)
+    #     except:
+    #         print("бывает")
+
+    # def delPlanet(namePlanet):
+    #     planetsDict = getAllPlanetsDict()
+    #     del planetsDict[f"{namePlanet}"]
+    #     updateJsonWithPlanets(planetsDict)
+
+    # def addPlanetInJson(planet):
+    #     with open("jsonPlanets.json", "r") as jsonWithPlanets:
+    #         listPlanets = json.load(jsonWithPlanets)
+    #     listPlanets[planet.name] = {"radius": planet.radius,
+    #                                 "weight": planet.weight,
+    #                                 "distanceFromTheSun": planet.distanceFromTheSun,
+    #                                 "type": planet.type}
+    #     updateJsonWithPlanets(listPlanets)
+
+    # def ssort(what):
+    #     listPlanets = getAllPlanetsList()
+    #     for i in range(len(listPlanets)):
+    #         indexMinElrmrnt = i
+    #         for j in range(i, len(listPlanets)):
+    #             if  planets.planet.__le__(listPlanets[indexMinElrmrnt], listPlanets[j], what):
+    #                 indexMinElrmrnt = j
+    #         listPlanets[i], listPlanets[indexMinElrmrnt] = listPlanets[indexMinElrmrnt], listPlanets[i]
+    #     return listPlanets
+
+
 def read():
     try:
         with open("db.json", "r", encoding="utf-8") as file:
@@ -22,8 +93,16 @@ def addElenment(newData: planet):
     write(updatingData)
 
 def write(data):
+    if type(data) == list:
+        data = listToJs(data)
     with open("db.json", "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
+
+def listToJs(ls: list[planet]):
+    js = {}
+    for i in range(len(ls)):
+        js[i] = ls[i].getDataList()
+    return js
 
 def dictToList(dict):
     conList = []
@@ -147,7 +226,7 @@ def sortListPlanet(list, pole):
 
 
 # если БД это лист
-# 1) ???
+# 1) ??? мб read()
 # 2) list.append(your element)
 # 3) sortListPlanet - Сортировка БД по выбранному полю
 # 4) тоже что и 2
